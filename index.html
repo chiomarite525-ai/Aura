@@ -1,211 +1,1460 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KASSY CHUKWU AURA | THE MASTER SHOWROOM</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root { --aura-blue: #0066ff; --silver-table: linear-gradient(145deg, #e2e8f0 0%, #ffffff 50%, #94a3b8 100%); }
-        body { background: #f8fafc; font-family: 'Inter', sans-serif; color: #1e293b; overflow-x: hidden; }
-        
-        /* SPEC 6: The Sidebar */
-        .sidebar { width: 320px; height: 100vh; position: fixed; left: 0; background: white; border-right: 1px solid #e2e8f0; padding: 30px; z-index: 1000; }
-        .main-view { margin-left: 320px; padding: 40px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kassy Chukwu Aura — AI Publishing Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f2f5;
+  --surface:#ffffff;
+  --surface2:#f8f9fb;
+  --border:#e4e8ef;
+  --blue:#2563eb;
+  --blue-light:#eff4ff;
+  --blue-mid:#dbeafe;
+  --ink:#0f172a;
+  --ink2:#334155;
+  --muted:#64748b;
+  --muted2:#94a3b8;
+  --green:#10b981;
+  --orange:#f59e0b;
+  --red:#ef4444;
+  --purple:#8b5cf6;
+  --sidebar:260px;
+  --radius:16px;
+  --shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 16px rgba(0,0,0,0.06);
+  --shadow-lg:0 8px 40px rgba(0,0,0,0.10);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden}
 
-        /* SPEC 3: 4K Silver/Glass Showroom */
-        .showroom { 
-            background: var(--silver-table); 
-            min-height: 500px; border-radius: 80px 80px 20px 20px; 
-            display: flex; align-items: center; justify-content: center; 
-            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.15);
-            position: relative; border: 2px solid white;
-        }
+/* ── LAYOUT ── */
+.app{display:flex;min-height:100vh}
 
-        /* SPEC 4: Vibrant Book with White Edges */
-        .book-3d { width: 240px; height: 340px; position: relative; transform-style: preserve-3d; transform: rotateY(-28deg) rotateX(5deg); transition: 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .book-3d:hover { transform: rotateY(0deg) rotateX(0deg); }
-        .cover { position: absolute; width: 100%; height: 100%; background: linear-gradient(135deg, #0066ff, #ff0077, #7000ff); color: white; border-radius: 4px 18px 18px 4px; padding: 35px; z-index: 10; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 25px 25px 60px rgba(0,0,0,0.3); }
-        .white-edges { position: absolute; width: 100%; height: 96%; background: #ffffff; right: -8px; top: 2%; transform: translateZ(-15px); border-radius: 0 12px 12px 0; border: 1px solid #ddd; }
+/* ── SIDEBAR ── */
+.sidebar{
+  width:var(--sidebar);min-width:var(--sidebar);background:var(--surface);
+  border-right:1px solid var(--border);display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:50;
+  transition:transform 0.3s;
+}
+.sidebar-logo{padding:22px 20px 16px;border-bottom:1px solid var(--border)}
+.logo-mark{display:flex;align-items:center;gap:10px}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#2563eb,#1d4ed8);border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-size:16px;flex-shrink:0}
+.logo-text{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;line-height:1.2;color:var(--ink)}
+.logo-text span{color:var(--blue);display:block;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
 
-        /* SPEC 11 & 12: Trend Pulse & Predictor */
-        .trend-card { background: #f1f5f9; border-radius: 15px; padding: 12px; margin-bottom: 10px; cursor: pointer; border: 1px solid transparent; transition: 0.2s; }
-        .trend-card:hover { border-color: var(--aura-blue); background: white; }
-        .pulse-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-        .global-wave { background: #ef4444; box-shadow: 0 0 10px #ef4444; }
-        .flash-spark { background: #fbbf24; box-shadow: 0 0 10px #fbbf24; }
-    </style>
+.sidebar-section{padding:16px 12px 8px}
+.sidebar-section-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted2);padding:0 8px;margin-bottom:6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;transition:all 0.15s;color:var(--muted);font-size:13px;font-weight:500;border:none;background:none;width:100%;text-align:left}
+.nav-item:hover{background:var(--blue-light);color:var(--blue)}
+.nav-item.active{background:var(--blue-light);color:var(--blue);font-weight:600}
+.nav-item .nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0}
+.nav-badge{margin-left:auto;background:var(--blue);color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px}
+.nav-badge.green{background:var(--green)}
+.nav-badge.orange{background:var(--orange)}
+
+/* Trend ticker in sidebar */
+.trend-ticker{margin:12px;background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:12px;padding:12px;overflow:hidden}
+.ticker-label{font-size:10px;font-weight:700;letter-spacing:2px;color:#60a5fa;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.ticker-dot{width:6px;height:6px;border-radius:50%;background:#10b981;animation:blink 1.2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+.ticker-item{font-size:11px;color:#e2e8f0;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:6px;line-height:1.4}
+.ticker-item:last-child{border-bottom:none}
+.ticker-flag{font-size:13px}
+.ticker-fire{color:#f59e0b;font-size:10px}
+.viral-badge{font-size:9px;background:#ef444420;color:#fca5a5;border:1px solid #ef444430;border-radius:4px;padding:1px 5px;margin-left:auto;white-space:nowrap}
+.viral-badge.wave{background:#10b98120;color:#6ee7b7;border-color:#10b98130}
+
+/* ── MAIN CONTENT ── */
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40}
+.topbar-left{display:flex;align-items:center;gap:16px}
+.page-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--ink)}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.topbar-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1px solid var(--border);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:500;color:var(--ink2);cursor:pointer;transition:all 0.15s}
+.topbar-btn:hover{background:var(--bg);border-color:var(--blue);color:var(--blue)}
+.topbar-btn.primary{background:var(--blue);color:white;border-color:var(--blue)}
+.topbar-btn.primary:hover{background:#1d4ed8}
+
+/* ── CONTENT PAGES ── */
+.page{display:none;padding:28px;flex:1;animation:pageIn 0.3s ease}
+.page.active{display:block}
+@keyframes pageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SECTION HEADER ── */
+.section-header{margin-bottom:24px}
+.section-header h2{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--ink);margin-bottom:4px}
+.section-header p{font-size:14px;color:var(--muted);line-height:1.6}
+
+/* ── CARDS ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+.card-sm{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;box-shadow:var(--shadow)}
+
+/* ── FORM ELEMENTS ── */
+.field{margin-bottom:18px}
+.field-label{display:block;font-size:12px;font-weight:600;color:var(--ink2);margin-bottom:7px;letter-spacing:0.3px}
+.field-label .hint{font-weight:400;color:var(--muted);margin-left:4px}
+input[type=text],input[type=password],input[type=url],textarea,select{
+  width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:var(--ink);
+  background:var(--surface2);outline:none;transition:border-color 0.2s,box-shadow 0.2s;
+}
+input:focus,textarea:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,0.1);background:white}
+textarea{resize:vertical;line-height:1.7;min-height:90px}
+select{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+
+/* ── GRID ── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+
+/* ── CHAPTER BUILDER ── */
+.chapter-list{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface2)}
+.chapter-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);background:white;transition:background 0.15s}
+.chapter-item:last-child{border-bottom:none}
+.chapter-item:hover{background:var(--blue-light)}
+.ch-num{width:28px;height:28px;border-radius:8px;background:var(--blue-light);color:var(--blue);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ch-title{flex:1;font-size:13px;font-weight:500;color:var(--ink2)}
+.ch-actions{display:flex;gap:4px}
+.ch-btn{width:28px;height:28px;border:none;border-radius:6px;background:transparent;cursor:pointer;font-size:13px;color:var(--muted);display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.ch-btn:hover{background:var(--blue-light);color:var(--blue)}
+.ch-btn.del:hover{background:#fee2e2;color:var(--red)}
+.add-chapter-row{padding:10px 16px;display:flex;gap:8px;background:var(--surface2);border-top:1px solid var(--border)}
+.add-chapter-row input{flex:1;padding:8px 12px;font-size:13px}
+.add-chapter-row button{padding:8px 16px;border-radius:8px;background:var(--blue);color:white;border:none;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+
+/* ── TONE PILLS ── */
+.pill-group{display:flex;flex-wrap:wrap;gap:8px}
+.pill{padding:7px 14px;border-radius:100px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.15s}
+.pill:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
+.pill.active{background:var(--blue);border-color:var(--blue);color:white}
+
+/* ── BIG BUTTON ── */
+.btn-main{width:100%;padding:16px;border-radius:12px;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:white;font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;border:none;cursor:pointer;box-shadow:0 4px 20px rgba(37,99,235,0.35);transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-main:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 28px rgba(37,99,235,0.45)}
+.btn-main:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.btn-outline{padding:10px 20px;border-radius:10px;background:transparent;border:1.5px solid var(--border);color:var(--ink2);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s}
+.btn-outline:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
+.btn-sm{padding:8px 16px;border-radius:8px;background:var(--blue);color:white;font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all 0.15s}
+.btn-sm:hover{background:#1d4ed8}
+
+/* ── STATUS / PROGRESS ── */
+.progress-card{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:var(--radius);padding:28px;color:white;display:none}
+.progress-card.active{display:block;animation:fadeIn 0.4s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.progress-steps{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+.progress-step{display:flex;align-items:center;gap:12px;font-size:13px;opacity:0.4;transition:opacity 0.3s}
+.progress-step.done{opacity:1;color:#6ee7b7}
+.progress-step.active{opacity:1;color:#93c5fd}
+.step-icon{font-size:16px;width:20px}
+.step-bar{height:3px;background:#1e293b;border-radius:100px;margin-top:14px;overflow:hidden}
+.step-fill{height:100%;background:linear-gradient(90deg,#2563eb,#60a5fa);border-radius:100px;transition:width 0.5s ease;width:0%}
+
+/* ── BOOK RESULT ── */
+#result-section{display:none;animation:pageIn 0.5s ease}
+.book-display{background:white;border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:var(--shadow-lg)}
+.book-cover-strip{height:8px;background:linear-gradient(90deg,#2563eb,#7c3aed,#db2777,#ea580c)}
+.book-meta{padding:28px 32px 20px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,var(--blue-light) 0%,white 100%)}
+.book-meta h2{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--ink);margin-bottom:6px}
+.book-meta .book-info{font-size:13px;color:var(--muted);display:flex;gap:16px;flex-wrap:wrap}
+.book-info span{display:flex;align-items:center;gap:5px}
+.toc-section{padding:24px 32px;border-bottom:1px solid var(--border);background:var(--surface2)}
+.toc-section h3{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.toc-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+.toc-list li{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--ink2);padding:6px 10px;border-radius:8px;cursor:pointer;transition:all 0.15s}
+.toc-list li:hover{background:var(--blue-light);color:var(--blue)}
+.toc-num{width:24px;height:24px;border-radius:6px;background:var(--blue-light);color:var(--blue);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.toc-dots{flex:1;border-bottom:1px dotted var(--border);margin:0 8px}
+.toc-page{font-size:12px;color:var(--muted2)}
+.book-content{padding:32px;max-height:600px;overflow-y:auto}
+.book-content::-webkit-scrollbar{width:4px}
+.book-content::-webkit-scrollbar-track{background:transparent}
+.book-content::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+#bookBody{white-space:pre-wrap;line-height:2;color:var(--ink2);font-size:15px}
+.book-actions{padding:20px 32px;border-top:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.fingerprint-box{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:12px;padding:14px 18px;margin:20px 32px;display:flex;align-items:center;gap:12px}
+.fp-icon{font-size:20px}
+.fp-text h4{font-size:12px;font-weight:700;color:#60a5fa;letter-spacing:1px;text-transform:uppercase}
+.fp-text p{font-size:11px;color:#94a3b8;margin-top:2px;font-family:monospace;letter-spacing:1px}
+
+/* ── FEATURE CARDS ── */
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.feature-card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:20px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden}
+.feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--fc-color,var(--blue))}
+.feature-card:hover{border-color:var(--fc-color,var(--blue));box-shadow:0 4px 24px rgba(37,99,235,0.12);transform:translateY(-2px)}
+.feature-card h3{font-size:14px;font-weight:700;color:var(--ink);margin:10px 0 4px}
+.feature-card p{font-size:12px;color:var(--muted);line-height:1.6}
+.fc-icon{font-size:24px}
+.fc-badge{position:absolute;top:14px;right:14px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;letter-spacing:0.5px}
+.fc-badge.soon{background:#fef3c7;color:#92400e}
+.fc-badge.live{background:#d1fae5;color:#065f46;display:flex;align-items:center;gap:4px}
+.fc-badge.live::before{content:'';width:5px;height:5px;border-radius:50%;background:#10b981}
+
+/* ── UPLOAD ZONE ── */
+.upload-zone{border:2px dashed var(--border);border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--surface2)}
+.upload-zone:hover{border-color:var(--blue);background:var(--blue-light)}
+.upload-zone .uz-icon{font-size:32px;margin-bottom:10px}
+.upload-zone h4{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.upload-zone p{font-size:12px;color:var(--muted)}
+input[type=file]{display:none}
+
+/* ── AVATAR CARDS ── */
+.avatar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.avatar-card{border:2px solid var(--border);border-radius:12px;padding:16px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--surface2)}
+.avatar-card:hover,.avatar-card.selected{border-color:var(--blue);background:var(--blue-light)}
+.avatar-card .av-emoji{font-size:36px;margin-bottom:8px}
+.avatar-card h4{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.avatar-card p{font-size:11px;color:var(--muted)}
+
+/* ── ERROR ── */
+.error-box{background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:13px 16px;font-size:13px;color:#b91c1c;display:none;line-height:1.6;margin-top:14px}
+
+/* ── ISBN TOGGLE ── */
+.toggle-group{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.toggle-option{border:1.5px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:all 0.15s;text-align:center}
+.toggle-option:hover{border-color:var(--blue);background:var(--blue-light)}
+.toggle-option.active{border-color:var(--blue);background:var(--blue-light)}
+.toggle-option h4{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.toggle-option p{font-size:11px;color:var(--muted)}
+.toggle-option .to-icon{font-size:20px;margin-bottom:6px}
+
+/* ── CONTACT STRIP ── */
+.contact-strip{background:linear-gradient(135deg,#0f172a,#1e1f2e);border-radius:12px;padding:18px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.contact-item{display:flex;align-items:center;gap:8px;color:white;font-size:13px}
+.contact-item .ci-icon{font-size:18px}
+.contact-sep{color:#475569;font-size:10px}
+
+/* ── SCROLLBAR ── */
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-track{background:transparent}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .grid-2,.grid-3,.feature-grid,.avatar-grid{grid-template-columns:1fr}
+  .book-meta,.book-content,.toc-section,.book-actions,.fingerprint-box{padding-left:20px;padding-right:20px}
+  .menu-toggle{display:flex}
+}
+.menu-toggle{display:none;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--border);border-radius:8px;cursor:pointer;background:var(--surface);font-size:18px}
+
+/* ── WORD COUNT BAR ── */
+.wc-bar{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:14px}
+.wc-bar span{color:var(--blue);font-weight:700}
+</style>
 </head>
 <body>
+<div class="app">
 
-    <aside class="sidebar flex flex-col">
-        <div class="mb-10"><h1 class="text-2xl font-black italic tracking-tighter uppercase">KASSY CHUKWU <span class="text-blue-600">AURA</span></h1></div>
-        
-        <nav class="space-y-3 flex-1">
-            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Master Channels</p>
-            <button class="w-full p-4 hover:bg-slate-50 border border-slate-100 rounded-2xl text-left text-[11px] font-bold flex items-center gap-3"><i class="fas fa-bolt text-blue-600"></i> Viral Video Converter</button>
-            <button class="w-full p-4 hover:bg-slate-50 border border-slate-100 rounded-2xl text-left text-[11px] font-bold flex items-center gap-3"><i class="fas fa-file-pdf text-blue-600"></i> Document Rewriter</button>
-            <button class="w-full p-4 hover:bg-slate-50 border border-slate-100 rounded-2xl text-left text-[11px] font-bold flex items-center gap-3"><i class="fas fa-link text-blue-600"></i> Link Summarizer</button>
-            
-            <div class="mt-8 pt-6 border-t border-slate-100">
-                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">SPEC 10: Face-to-Avatar</p>
-                <input type="file" id="faceUp" class="hidden" onchange="processAvatar(event)">
-                <label for="faceUp" class="w-full py-6 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 transition-all">
-                    <div id="faceThumb" class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-2 overflow-hidden">
-                        <i class="fas fa-user-plus text-slate-400"></i>
-                    </div>
-                    <span class="text-[9px] font-black uppercase">Upload Author Face</span>
-                </label>
+<!-- ══════════════════ SIDEBAR ══════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <div class="logo-icon">✦</div>
+      <div class="logo-text">Kassy Chukwu<span>Aura Studio</span></div>
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Studio</div>
+    <button class="nav-item active" onclick="showPage('write')">
+      <span class="nav-icon">✍️</span> Book Writer
+    </button>
+    <button class="nav-item" onclick="showPage('rewriter')">
+      <span class="nav-icon">🔄</span> Doc Rewriter
+    </button>
+    <button class="nav-item" onclick="showPage('link')">
+      <span class="nav-icon">🔗</span> Link Summarizer
+    </button>
+    <button class="nav-item" onclick="showPage('video')">
+      <span class="nav-icon">🎬</span> Video to Book
+      <span class="nav-badge orange">Beta</span>
+    </button>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Identity</div>
+    <button class="nav-item" onclick="showPage('avatar')">
+      <span class="nav-icon">🧑‍💼</span> Author Avatar
+    </button>
+    <button class="nav-item" onclick="showPage('protect')">
+      <span class="nav-icon">🛡️</span> Protection & ISBN
+    </button>
+    <button class="nav-item" onclick="showPage('contact')">
+      <span class="nav-icon">📱</span> Contact & Ads
+    </button>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Intelligence</div>
+    <button class="nav-item" onclick="showPage('trends')">
+      <span class="nav-icon">📡</span> Trend Pulse
+      <span class="nav-badge green">Live</span>
+    </button>
+  </div>
+
+  <!-- Live Trend Ticker -->
+  <div class="trend-ticker">
+    <div class="ticker-label"><div class="ticker-dot"></div> Live Trends</div>
+    <div id="tickerFeed"></div>
+  </div>
+</aside>
+
+<!-- ══════════════════ MAIN ══════════════════ -->
+<main class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
+      <div class="page-title" id="pageTitle">Book Writer</div>
+    </div>
+    <div class="topbar-right">
+      <button class="topbar-btn" onclick="showPage('protect')">🛡️ Protect Book</button>
+      <button class="topbar-btn primary" onclick="showPage('write')">+ New Book</button>
+    </div>
+  </div>
+
+  <!-- ══ PAGE: BOOK WRITER ══ -->
+  <div class="page active" id="page-write">
+    <div class="section-header">
+      <h2>Book Writer Studio</h2>
+      <p>Create any book — fiction, non-fiction, devotional, business — with chapters, table of contents & human-voice writing.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 380px;gap:20px;align-items:start">
+
+      <!-- Left Column -->
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:16px">📖 Book Details</div>
+
+          <div class="field">
+            <label class="field-label">Book Title *</label>
+            <input type="text" id="bookTitle" placeholder="e.g. The Power of Faith and Resilience" />
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <label class="field-label">Book Genre</label>
+              <select id="bookGenre">
+                <option value="non-fiction">📘 Non-Fiction</option>
+                <option value="self-help">💡 Self-Help</option>
+                <option value="devotional">🙏 Devotional / Spiritual</option>
+                <option value="fiction">📖 Fiction / Novel</option>
+                <option value="business">💼 Business & Leadership</option>
+                <option value="biography">👤 Biography / Memoir</option>
+                <option value="academic">🎓 Academic / Research</option>
+                <option value="children">🌟 Children's Book</option>
+                <option value="romance">💕 Romance Novel</option>
+                <option value="thriller">🔥 Thriller / Mystery</option>
+                <option value="health">🌿 Health & Wellness</option>
+                <option value="finance">💰 Finance & Wealth</option>
+              </select>
             </div>
-        </nav>
+            <div class="field">
+              <label class="field-label">Target Audience</label>
+              <select id="bookAudience">
+                <option>General Adults</option>
+                <option>Young Adults (16–25)</option>
+                <option>Children (8–12)</option>
+                <option>Professionals</option>
+                <option>Entrepreneurs</option>
+                <option>Women</option>
+                <option>Men</option>
+                <option>Christians / Faith Community</option>
+                <option>Students</option>
+              </select>
+            </div>
+          </div>
 
-        <div class="mt-auto">
-            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Live Trend Pulse (NG/Global)</p>
-            <div id="ticker" class="max-h-40 overflow-y-auto pr-2 no-scrollbar"></div>
+          <div class="field">
+            <label class="field-label">What Is This Book About? <span class="hint">(describe your vision)</span></label>
+            <textarea id="bookDesc" placeholder="e.g. A guide to overcoming life's biggest challenges using faith, mindset shifts, and practical strategies. Include real-life examples and make it relatable to everyday Nigerians and Africans."></textarea>
+          </div>
+
+          <div class="field">
+            <label class="field-label">Author Name</label>
+            <input type="text" id="authorName" placeholder="e.g. Kassy Chukwu" />
+          </div>
+
+          <div class="field">
+            <label class="field-label">Writing Tone</label>
+            <div class="pill-group" id="tonePills">
+              <button class="pill active" data-tone="warm, inspiring, and relatable">✨ Inspiring</button>
+              <button class="pill" data-tone="bold, direct, and motivating">🔥 Bold</button>
+              <button class="pill" data-tone="spiritual and devotional">🙏 Spiritual</button>
+              <button class="pill" data-tone="professional and authoritative">📋 Professional</button>
+              <button class="pill" data-tone="friendly and conversational">😊 Friendly</button>
+              <button class="pill" data-tone="academic and scholarly">🎓 Academic</button>
+              <button class="pill" data-tone="storytelling and narrative">📖 Narrative</button>
+            </div>
+          </div>
         </div>
-    </aside>
 
-    <main class="main-view">
-        <header class="flex justify-between items-center mb-10">
-            <div class="bg-blue-600 text-white px-4 py-2 rounded-full text-[10px] font-black tracking-widest uppercase">System Active: Feb 19, 2026</div>
-            <div class="flex gap-6 items-center">
-                <a href="#" class="text-slate-400 hover:text-blue-600 transition-all"><i class="fab fa-whatsapp text-2xl"></i></a>
-                <a href="#" class="text-slate-400 hover:text-blue-600 transition-all"><i class="fab fa-instagram text-2xl"></i></a>
-            </div>
-        </header>
+        <!-- Chapter Builder -->
+        <div class="card" style="margin-bottom:16px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+            <div style="font-size:13px;font-weight:700;color:var(--ink)">📑 Table of Contents Builder</div>
+            <button class="btn-sm" onclick="autoGenerateChapters()">✦ Auto-Generate</button>
+          </div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:12px">Add your chapters manually or click Auto-Generate to let AI create the structure.</div>
 
-        <div class="max-w-4xl">
-            <h2 class="text-6xl font-black tracking-tighter mb-4 text-slate-900 leading-[0.9]">Aura Intelligence.</h2>
-            <p class="text-slate-400 mb-10 text-xl font-medium">Generate 20+ chapters with international digital protection.</p>
-
-            <div class="bg-white p-10 rounded-[50px] shadow-sm border border-slate-100">
-                <textarea id="bookTitle" placeholder="Paste link or type title..." class="w-full h-24 text-2xl font-bold outline-none mb-6 resize-none"></textarea>
-                
-                <div class="flex flex-wrap gap-8 items-center border-t border-slate-50 pt-8">
-                    <div class="flex flex-col gap-2">
-                        <label class="text-[10px] font-black uppercase text-slate-400">Chapter Volume</label>
-                        <input type="number" id="chapCount" value="20" class="w-24 p-4 bg-slate-50 rounded-2xl font-black border-none outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    
-                    <div class="flex flex-col gap-2">
-                        <label class="text-[10px] font-black uppercase text-slate-400">Spec 14: Protection</label>
-                        <select id="protectionMode" class="p-4 bg-slate-50 rounded-2xl font-black border-none outline-none text-[11px] uppercase tracking-widest">
-                            <option value="SHIELD">Digital Shield (Hash)</option>
-                            <option value="ISBN">Free ISBN (Amazon/Lulu)</option>
-                        </select>
-                    </div>
-
-                    <button onclick="generateMasterpiece()" id="igniteBtn" class="flex-1 bg-blue-600 text-white py-6 rounded-3xl font-black text-xl uppercase tracking-[0.3em] shadow-2xl shadow-blue-200 active:scale-95 transition-all">Ignite Aura</button>
-                </div>
-            </div>
-
-            <div id="showroom" class="hidden mt-24">
-                <div class="showroom">
-                    <div class="book-3d">
-                        <div class="cover">
-                            <span class="text-[8px] font-black uppercase tracking-widest opacity-60">International Edition</span>
-                            <h3 id="showTitle" class="text-2xl font-black leading-tight"></h3>
-                            <div class="border-t border-white/20 pt-4 flex justify-between items-center">
-                                <span class="text-[9px] font-bold italic">Kassy Chukwu Aura</span>
-                                <div id="wavePredictor"></div> </div>
-                        </div>
-                        <div class="white-edges"></div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mt-20 border-t pt-20">
-                    <div>
-                        <h3 class="text-4xl font-black tracking-tighter mb-4 italic text-blue-600">The 4K Ad Pulse</h3>
-                        <p class="text-slate-500 text-sm font-medium mb-6">Your expert avatar is now marketing this book across Nigeria and Global markets with undetectable human logic.</p>
-                        <div class="p-8 bg-slate-900 text-white rounded-[40px] font-mono text-xs leading-relaxed shadow-2xl">
-                            <span class="text-blue-400 font-bold">// AVATAR_AD_SCRIPT</span><br><br>
-                            "I am Kassy's Expert Avatar. <span id="adTitle" class="text-blue-400 underline"></span> is now live. Every word is digitally protected under the International Shield. Secure your copy today."
-                        </div>
-                    </div>
-                    <div class="relative flex justify-center">
-                        <div class="w-[300px] h-[400px] bg-black rounded-[40px] overflow-hidden border-4 border-white shadow-2xl">
-                            <img id="avatarImg" src="https://i.pravatar.cc/400?u=kassy" class="w-full h-full object-cover">
-                            <div class="absolute bottom-6 left-6 right-6 p-4 bg-white/10 backdrop-blur-md rounded-2xl text-white">
-                                <p class="text-[8px] font-black uppercase tracking-widest">Expert Avatar Active</p>
-                                <p class="text-[10px] font-bold" id="adSmallTitle"></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="manuscriptBody" class="mt-20 bg-white p-20 rounded-[60px] shadow-2xl text-xl leading-relaxed italic whitespace-pre-wrap border border-slate-100"></div>
-
-                <div class="text-center py-20">
-                    <button onclick="downloadManuscript()" class="bg-blue-600 text-white px-12 py-5 rounded-3xl font-black uppercase text-xs tracking-widest shadow-xl">Download Protected PDF</button>
-                    <div id="fingerprint" class="mt-8 text-[10px] font-mono text-slate-300"></div> </div>
-            </div>
+          <div class="chapter-list" id="chapterList">
+            <!-- Chapters rendered here -->
+          </div>
+          <div class="add-chapter-row">
+            <input type="text" id="newChapterInput" placeholder="Add chapter title..." onkeypress="if(event.key==='Enter')addChapter()" />
+            <button onclick="addChapter()">+ Add Chapter</button>
+          </div>
         </div>
-    </main>
 
-    <footer class="ml-[320px] py-10 text-center opacity-30">
-        <p class="text-[11px] font-black uppercase tracking-[0.5em]">App is designed by Precious Alakpa</p>
-    </footer>
+        <!-- Advanced Options -->
+        <div class="card" style="margin-bottom:16px">
+          <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:14px">⚙️ Advanced Options</div>
+          <div class="grid-2">
+            <div class="field">
+              <label class="field-label">Words per Chapter</label>
+              <select id="wordsPerChapter">
+                <option value="500">Short (~500 words)</option>
+                <option value="800" selected>Medium (~800 words)</option>
+                <option value="1200">Long (~1,200 words)</option>
+                <option value="1800">Very Long (~1,800 words)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="field-label">Writing Style</label>
+              <select id="writingStyle">
+                <option value="human-natural">🧠 Human-Natural (AI Undetectable)</option>
+                <option value="storytelling">📖 Story-Driven</option>
+                <option value="practical">✅ Practical & Actionable</option>
+                <option value="poetic">🌸 Poetic & Lyrical</option>
+              </select>
+            </div>
+          </div>
+          <div class="field" style="margin-bottom:0">
+            <label class="field-label">Special Instructions <span class="hint">(optional)</span></label>
+            <textarea id="specialInstructions" style="min-height:60px" placeholder="e.g. Include Bible verses, Add Nigerian cultural references, Make it humorous, Include statistics..."></textarea>
+          </div>
+        </div>
 
-    <script>
-        // SPEC 11: LIVE TREND PULSE ENGINE
-        async function loadTrends() {
-            const ticker = document.getElementById('ticker');
-            const countries = ['Nigeria', 'Global', 'USA', 'UK'];
-            ticker.innerHTML = '<p class="text-[10px] font-bold animate-pulse text-blue-600 uppercase">Syncing Pulse...</p>';
-            
-            try {
-                const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://news.google.com/rss/search?q=technology');
-                const data = await res.json();
-                ticker.innerHTML = '';
-                data.items.slice(0, 10).forEach((item, idx) => {
-                    const country = countries[idx % countries.length];
-                    const time = (idx + 1) * 15;
-                    const card = document.createElement('div');
-                    card.className = 'trend-card';
-                    card.onclick = () => { document.getElementById('bookTitle').value = item.title; };
-                    card.innerHTML = `
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-[8px] font-black text-blue-600 uppercase">${country}</span>
-                            <span class="text-[8px] font-bold text-slate-400">${time}m ago</span>
-                        </div>
-                        <p class="text-[9px] font-black truncate">${item.title}</p>
-                    `;
-                    ticker.appendChild(card);
-                });
-            } catch(e) { ticker.innerHTML = '<p class="text-[10px]">Pulse Online. Enter Title Manually.</p>'; }
-        }
-        loadTrends();
+        <!-- Generate Button -->
+        <div class="wc-bar">
+          <span>Chapters: <span id="chapterCount">0</span></span>
+          <span>Est. Words: <span id="wordEstimate">0</span></span>
+          <span>Est. Pages: <span id="pageEstimate">0</span></span>
+        </div>
+        <button class="btn-main" id="genBtn" onclick="generateBook()">
+          ✦ Generate Complete Book
+        </button>
+        <div class="error-box" id="errorBox"></div>
 
-        // SPEC 10: FACE-TO-AVATAR
-        function processAvatar(e) {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.onload = function() {
-                document.getElementById('faceThumb').innerHTML = `<img src="${reader.result}" class="w-full h-full object-cover">`;
-                document.getElementById('avatarImg').src = reader.result;
-            }
-            reader.readAsDataURL(file);
-        }
+        <!-- Progress -->
+        <div class="progress-card" id="progressCard" style="margin-top:16px">
+          <div style="font-size:14px;font-weight:700;color:white">Aura is writing your masterpiece...</div>
+          <div class="progress-steps" id="progressSteps"></div>
+          <div class="step-bar"><div class="step-fill" id="stepFill"></div></div>
+        </div>
+      </div>
 
-        // MASTER GENERATION ENGINE (SPECS 5, 12, 13, 14, 15)
-        function generateMasterpiece() {
-            const title = document.getElementById('bookTitle').value;
-            const chapters = parseInt(document.getElementById('chapCount').value) || 20;
-            const mode = document.getElementById('protectionMode').value;
-            if(!title) return alert("Title is required for the Aura engine.");
+      <!-- Right Column: Quick Tips -->
+      <div>
+        <div class="card-sm" style="margin-bottom:14px;border-left:3px solid var(--blue)">
+          <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">💡 Pro Tips</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.8">
+            ✅ Add at least 5 chapters for a full book<br>
+            ✅ Use "Auto-Generate" for a perfect structure<br>
+            ✅ Choose "Human-Natural" to pass AI detectors<br>
+            ✅ Add your description for more personalized content<br>
+            ✅ Get a Digital Fingerprint after writing
+          </div>
+        </div>
 
-            const btn = document.getElementById('igniteBtn');
-            btn.innerText = `CRAFTING ${chapters} CHAPTERS...`;
-            btn.disabled = true;
+        <div class="card-sm" style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:10px">📚 Book Templates</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <button class="btn-outline" style="width:100%;text-align:left;font-size:12px" onclick="loadTemplate('faith')">🙏 Faith & Devotional Book</button>
+            <button class="btn-outline" style="width:100%;text-align:left;font-size:12px" onclick="loadTemplate('business')">💼 Business Success Book</button>
+            <button class="btn-outline" style="width:100%;text-align:left;font-size:12px" onclick="loadTemplate('selfhelp')">💡 Self-Help & Mindset</button>
+            <button class="btn-outline" style="width:100%;text-align:left;font-size:12px" onclick="loadTemplate('fiction')">📖 Fiction Novel</button>
+            <button class="btn-outline" style="width:100%;text-align:left;font-size:12px" onclick="loadTemplate('finance')">💰 Wealth & Finance</button>
+          </div>
+        </div>
 
-            setTimeout(() => {
-                // SPEC 13: Digital Fingerprint (Hash)
-                const hash = CryptoJS.SHA256(title + Date.now()).toString().substring(0, 32).toUpperCase();
-                document.getElementById('fingerprint').innerText = `GLOBAL_RECOGNITION_HASH: 0x${hash}`;
+        <div class="card-sm" style="background:linear-gradient(135deg,#eff4ff,#fff);border-color:var(--blue-mid)">
+          <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:6px">🌍 Trending Now in Nigeria</div>
+          <div id="sidebarTrends" style="font-size:12px;color:var(--muted);line-height:2"></div>
+        </div>
+      </div>
+    </div>
 
-                // SPEC 12: Viral Predictor
-                const isWave = Math.random() > 0.5;
-                document.getElementById('wavePredictor').innerHTML = isWave ?
+    <!-- RESULT -->
+    <div id="result-section" style="margin-top:24px">
+      <div class="book-display">
+        <div class="book-cover-strip"></div>
+        <div class="book-meta">
+          <h2 id="displayTitle"></h2>
+          <div class="book-info">
+            <span>✍️ <span id="displayAuthor">—</span></span>
+            <span>📑 <span id="displayChapters">—</span> Chapters</span>
+            <span>📄 <span id="displayWords">—</span> Words</span>
+          </div>
+        </div>
+        <div class="toc-section">
+          <h3>Table of Contents</h3>
+          <ul class="toc-list" id="tocList"></ul>
+        </div>
+        <div class="book-content">
+          <div id="bookBody"></div>
+        </div>
+        <div class="fingerprint-box">
+          <div class="fp-icon">🛡️</div>
+          <div class="fp-text">
+            <h4>Digital Fingerprint</h4>
+            <p id="fingerprintHash">KCA-XXXX-XXXX-XXXX</p>
+          </div>
+          <button class="btn-sm" style="margin-left:auto" onclick="copyFingerprint()">Copy</button>
+        </div>
+        <div class="book-actions">
+          <button class="btn-sm" onclick="copyBook()">📋 Copy All Text</button>
+          <button class="btn-sm" style="background:var(--green)" onclick="downloadBook()">⬇️ Download .txt</button>
+          <button class="btn-outline" onclick="generateBook()">🔁 Regenerate</button>
+          <div style="margin-left:auto;font-size:12px;color:var(--muted)">Protected by Kassy Chukwu Aura ✦</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PAGE: DOC REWRITER ══ -->
+  <div class="page" id="page-rewriter">
+    <div class="section-header">
+      <h2>Document Rewriter</h2>
+      <p>Upload a PDF or paste text from any book. Aura rewrites it in your voice — fresh, original, and undetectable.</p>
+    </div>
+    <div class="grid-2" style="align-items:start">
+      <div>
+        <div class="card">
+          <div class="field">
+            <label class="field-label">Upload PDF or Document</label>
+            <div class="upload-zone" onclick="document.getElementById('pdfUpload').click()">
+              <div class="uz-icon">📄</div>
+              <h4>Click to upload PDF, DOCX, or TXT</h4>
+              <p>Or drag and drop here</p>
+            </div>
+            <input type="file" id="pdfUpload" accept=".pdf,.docx,.txt" onchange="handleFileUpload(this)" />
+          </div>
+          <div style="text-align:center;color:var(--muted);font-size:12px;margin:10px 0">— or paste text directly —</div>
+          <div class="field">
+            <label class="field-label">Paste Document Text</label>
+            <textarea id="rewriteInput" style="min-height:180px" placeholder="Paste the content you want rewritten here..."></textarea>
+          </div>
+          <div class="field">
+            <label class="field-label">Rewrite Style</label>
+            <select id="rewriteStyle">
+              <option>Rewrite in Author's Original Voice</option>
+              <option>Make it More Inspiring</option>
+              <option>Make it More Academic</option>
+              <option>Make it More Conversational</option>
+              <option>Make it Undetectable by AI Scanners</option>
+            </select>
+          </div>
+          <button class="btn-main" onclick="rewriteDoc()">🔄 Rewrite Now</button>
+          <div class="error-box" id="rewriteError"></div>
+        </div>
+      </div>
+      <div>
+        <div class="card" id="rewriteResult" style="display:none;min-height:300px">
+          <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px">✦ Rewritten Version</div>
+          <div id="rewriteOutput" style="white-space:pre-wrap;line-height:2;font-size:14px;color:var(--ink2)"></div>
+          <button class="btn-sm" style="margin-top:16px" onclick="navigator.clipboard.writeText(document.getElementById('rewriteOutput').innerText)">📋 Copy</button>
+        </div>
+        <div class="card-sm" style="margin-top:14px;border-left:3px solid var(--purple)">
+          <div style="font-size:12px;font-weight:700;color:var(--purple);margin-bottom:6px">⚡ What this does</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.8">
+            ✅ Rewrites any document in your unique voice<br>
+            ✅ Passes AI detection tools<br>
+            ✅ Maintains original meaning and message<br>
+            ✅ Adds your cultural & personal touch
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PAGE: LINK SUMMARIZER ══ -->
+  <div class="page" id="page-link">
+    <div class="section-header">
+      <h2>Link Summarizer & Expander</h2>
+      <p>Paste any article, blog post, or webpage link. Aura extracts, summarizes, and expands it into a full book or article.</p>
+    </div>
+    <div class="card" style="max-width:640px">
+      <div class="field">
+        <label class="field-label">Paste Link / URL</label>
+        <input type="url" id="linkInput" placeholder="https://example.com/article..." />
+      </div>
+      <div class="field">
+        <label class="field-label">What do you want to create?</label>
+        <select id="linkOutput">
+          <option>Expand into a Full Book</option>
+          <option>Write a Detailed Article</option>
+          <option>Create a Summary</option>
+          <option>Turn into a Social Media Thread</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="field-label">Additional Context <span class="hint">(optional)</span></label>
+        <textarea id="linkContext" placeholder="Add your angle, target audience, or extra details..." style="min-height:80px"></textarea>
+      </div>
+      <button class="btn-main" onclick="summarizeLink()">🔗 Extract & Expand</button>
+      <div class="error-box" id="linkError"></div>
+      <div id="linkResult" style="display:none;margin-top:20px">
+        <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px">✦ Generated Content</div>
+        <div id="linkOutput2" style="white-space:pre-wrap;line-height:2;font-size:14px;color:var(--ink2)"></div>
+        <button class="btn-sm" style="margin-top:14px" onclick="navigator.clipboard.writeText(document.getElementById('linkOutput2').innerText)">📋 Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PAGE: VIDEO TO BOOK ══ -->
+  <div class="page" id="page-video">
+    <div class="section-header">
+      <h2>Video to Book Converter</h2>
+      <p>Convert YouTube videos, sermons, or lectures into full books or articles.</p>
+    </div>
+    <div class="card" style="max-width:640px">
+      <div style="background:var(--blue-light);border:1px solid var(--blue-mid);border-radius:10px;padding:14px;margin-bottom:18px;font-size:13px;color:var(--blue)">
+        🎬 Paste a YouTube link or describe the video content below. Aura will write a book based on it.
+      </div>
+      <div class="field">
+        <label class="field-label">YouTube / Video Link</label>
+        <input type="url" id="videoLink" placeholder="https://youtube.com/watch?v=..." />
+      </div>
+      <div style="text-align:center;color:var(--muted);font-size:12px;margin:8px 0">— or describe the video topic —</div>
+      <div class="field">
+        <label class="field-label">Video Topic / Description</label>
+        <textarea id="videoDesc" placeholder="e.g. A 45-minute sermon about finding purpose in pain by Pastor David Adeyemi..." style="min-height:80px"></textarea>
+      </div>
+      <div class="field">
+        <label class="field-label">Convert to</label>
+        <select>
+          <option>📖 Full Book with Chapters</option>
+          <option>📰 Long Article / Essay</option>
+          <option>🙏 Devotional Series</option>
+        </select>
+      </div>
+      <button class="btn-main" onclick="videoToBook()">🎬 Convert to Book</button>
+      <div class="error-box" id="videoError"></div>
+      <div id="videoResult" style="display:none;margin-top:20px">
+        <div style="font-size:12px;font-weight:700;color:var(--blue);margin-bottom:12px">✦ Your Book</div>
+        <div id="videoOutput" style="white-space:pre-wrap;line-height:2;font-size:14px;color:var(--ink2)"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PAGE: AVATAR ══ -->
+  <div class="page" id="page-avatar">
+    <div class="section-header">
+      <h2>Author Face-to-Avatar</h2>
+      <p>Upload your photo. Aura places your face onto a professional 4K marketing avatar for your book ads.</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="field">
+          <label class="field-label">Upload Your Photo</label>
+          <div class="upload-zone" onclick="document.getElementById('faceUpload').click()">
+            <div class="uz-icon">🤳</div>
+            <h4>Upload your clear face photo</h4>
+            <p>JPG, PNG — Best with good lighting</p>
+          </div>
+          <input type="file" id="faceUpload" accept="image/*" onchange="previewFace(this)" />
+        </div>
+        <div id="facePreview" style="display:none;margin-bottom:16px;text-align:center">
+          <img id="faceImg" style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid var(--blue)" />
+          <div style="font-size:12px;color:var(--green);margin-top:6px;font-weight:600">✅ Photo uploaded!</div>
+        </div>
+        <div class="field">
+          <label class="field-label">Choose Avatar Style</label>
+          <div class="avatar-grid" id="avatarGrid">
+            <div class="avatar-card selected" data-style="Intellectual Professional" onclick="selectAvatar(this)">
+              <div class="av-emoji">🧑‍💻</div>
+              <h4>Intellectual</h4>
+              <p>Smart, credible, expert</p>
+            </div>
+            <div class="avatar-card" data-style="Expert Authority" onclick="selectAvatar(this)">
+              <div class="av-emoji">👔</div>
+              <h4>Expert</h4>
+              <p>Formal, authoritative</p>
+            </div>
+            <div class="avatar-card" data-style="Social Influencer" onclick="selectAvatar(this)">
+              <div class="av-emoji">🌟</div>
+              <h4>Socialite</h4>
+              <p>Vibrant, social media</p>
+            </div>
+          </div>
+        </div>
+        <button class="btn-main" onclick="generateAvatar()">🧑‍💼 Generate My Avatar</button>
+      </div>
+      <div>
+        <div class="card" style="min-height:250px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center" id="avatarResult">
+          <div style="font-size:48px;margin-bottom:12px">🖼️</div>
+          <div style="font-size:14px;font-weight:600;color:var(--ink)">Your Avatar Appears Here</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:6px">Upload photo & click Generate</div>
+        </div>
+        <div class="card-sm" style="margin-top:14px;border-left:3px solid var(--orange)">
+          <div style="font-size:12px;font-weight:700;color:var(--orange);margin-bottom:6px">📢 Coming Full Feature</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.8">
+            Full AI face-swapping onto 4K professional backgrounds is coming soon. Currently generates a personalized avatar description & profile you can use with tools like Canva or HeyGen.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PAGE: PROTECTION ══ -->
+  <div class="page" id="page-protect">
+    <div class="section-header">
+      <h2>Book Protection & ISBN</h2>
+      <p>Protect your intellectual property with a Digital Fingerprint. Optionally get a real ISBN for distribution.</p>
+    </div>
+    <div class="grid-2" style="align-items:start">
+      <div>
+        <div class="card">
+          <div style="font-size:13px;font-weight:700;margin-bottom:14px">🛡️ Digital Fingerprint Generator</div>
+          <div class="field">
+            <label class="field-label">Book Title</label>
+            <input type="text" id="fpTitle" placeholder="Enter your book title..." />
+          </div>
+          <div class="field">
+            <label class="field-label">Author Name</label>
+            <input type="text" id="fpAuthor" placeholder="Your full name..." />
+          </div>
+          <div class="field">
+            <label class="field-label">Creation Date</label>
+            <input type="text" id="fpDate" placeholder="e.g. 20 February 2026" />
+          </div>
+          <button class="btn-main" onclick="generateFingerprint()">🛡️ Generate Fingerprint</button>
+          <div id="fingerprintResult" style="display:none;margin-top:16px;background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:12px;padding:18px">
+            <div style="font-size:10px;font-weight:700;color:#60a5fa;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">Your Digital Fingerprint</div>
+            <div id="fpHash" style="font-family:monospace;font-size:12px;color:#e2e8f0;word-break:break-all;line-height:1.8"></div>
+            <button class="btn-sm" style="margin-top:12px;background:#1d4ed8" onclick="copyFP()">📋 Copy Fingerprint</button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div style="font-size:13px;font-weight:700;margin-bottom:14px">📚 ISBN Options</div>
+          <div class="toggle-group">
+            <div class="toggle-option active" onclick="selectISBN(this,'digital')">
+              <div class="to-icon">🛡️</div>
+              <h4>Digital Shield</h4>
+              <p>Free fingerprint. Instant protection. No registration needed.</p>
+            </div>
+            <div class="toggle-option" onclick="selectISBN(this,'isbn')">
+              <div class="to-icon">📖</div>
+              <h4>Get Real ISBN</h4>
+              <p>Distribute to Amazon, Lulu & bookstores worldwide.</p>
+            </div>
+          </div>
+          <div id="isbnInfo" style="margin-top:16px;background:var(--blue-light);border-radius:10px;padding:14px;font-size:13px;color:var(--blue);display:none">
+            <b>How to get a free ISBN:</b><br><br>
+            🇳🇬 <b>Nigeria:</b> Register at <b>nlng.gov.ng</b> (National Library of Nigeria)<br><br>
+            🌍 <b>Global:</b> Use <b>lulu.com</b> or <b>draft2digital.com</b> — both give free ISBNs when you publish with them.<br><br>
+            📦 <b>Amazon KDP</b> also provides a free ASIN/ISBN when you publish your book.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PAGE: CONTACT ══ -->
+  <div class="page" id="page-contact">
+    <div class="section-header">
+      <h2>Contact & Ad Integration</h2>
+      <p>Pin your WhatsApp, social media, and contact info directly onto your book ads.</p>
+    </div>
+    <div class="card" style="max-width:600px">
+      <div class="field">
+        <label class="field-label">WhatsApp Number</label>
+        <input type="text" id="contactWA" placeholder="+234 800 000 0000" />
+      </div>
+      <div class="field">
+        <label class="field-label">Instagram Handle</label>
+        <input type="text" id="contactIG" placeholder="@your_handle" />
+      </div>
+      <div class="field">
+        <label class="field-label">TikTok Handle</label>
+        <input type="text" id="contactTT" placeholder="@your_handle" />
+      </div>
+      <div class="field">
+        <label class="field-label">Facebook Page</label>
+        <input type="text" id="contactFB" placeholder="facebook.com/yourpage" />
+      </div>
+      <div class="field">
+        <label class="field-label">Twitter / X Handle</label>
+        <input type="text" id="contactTW" placeholder="@your_handle" />
+      </div>
+      <div class="field">
+        <label class="field-label">Website</label>
+        <input type="text" id="contactWeb" placeholder="www.yourwebsite.com" />
+      </div>
+      <button class="btn-main" onclick="saveContact()">💾 Save & Generate Contact Strip</button>
+      <div id="contactStrip" style="display:none;margin-top:20px">
+        <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:10px">✅ Your Contact Strip (for Ads)</div>
+        <div class="contact-strip" id="contactStripContent"></div>
+        <div style="font-size:12px;color:var(--muted);margin-top:10px">This strip is automatically added to all your book ads and PDFs.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PAGE: TRENDS ══ -->
+  <div class="page" id="page-trends">
+    <div class="section-header">
+      <h2>Real-Time Trend Pulse</h2>
+      <p>Live trending topics across Nigeria, Africa & the World. Find your next viral book idea.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+          <span>🇳🇬</span>
+          <div style="font-size:13px;font-weight:700;color:var(--ink)">Nigeria Trends</div>
+          <div class="ticker-dot" style="margin-left:auto"></div>
+        </div>
+        <div id="ngTrends"></div>
+      </div>
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+          <span>🌍</span>
+          <div style="font-size:13px;font-weight:700;color:var(--ink)">Global Trends</div>
+          <div class="ticker-dot" style="margin-left:auto"></div>
+        </div>
+        <div id="globalTrends"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:14px">🔮 Viral Predictor — Turn a Trend Into a Book</div>
+      <div id="viralPredictor"></div>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<script>
+// ══════════════════════════════════════
+// STATE
+// ══════════════════════════════════════
+let chapters = [];
+let selectedTone = 'warm, inspiring, and relatable';
+
+// ══════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════
+const pageTitles = {
+  write:'Book Writer',rewriter:'Document Rewriter',link:'Link Summarizer',
+  video:'Video to Book',avatar:'Author Avatar',protect:'Protection & ISBN',
+  contact:'Contact & Ads',trends:'Trend Pulse'
+};
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelector(`[onclick="showPage('${id}')"]`)?.classList.add('active');
+  document.getElementById('pageTitle').innerText = pageTitles[id] || id;
+  if(window.innerWidth<=768) document.getElementById('sidebar').classList.remove('open');
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+// ══════════════════════════════════════
+// TONE PILLS
+// ══════════════════════════════════════
+document.querySelectorAll('#tonePills .pill').forEach(p => {
+  p.addEventListener('click', function(){
+    document.querySelectorAll('#tonePills .pill').forEach(x=>x.classList.remove('active'));
+    p.classList.add('active');
+    selectedTone = p.dataset.tone;
+  });
+});
+
+// ══════════════════════════════════════
+// CHAPTER BUILDER
+// ══════════════════════════════════════
+function renderChapters() {
+  const list = document.getElementById('chapterList');
+  list.innerHTML = chapters.length === 0
+    ? '<div style="padding:20px;text-align:center;font-size:13px;color:var(--muted)">No chapters yet. Add chapters or click Auto-Generate.</div>'
+    : chapters.map((ch,i) => `
+      <div class="chapter-item">
+        <div class="ch-num">${i+1}</div>
+        <div class="ch-title">${ch}</div>
+        <div class="ch-actions">
+          ${i>0?`<button class="ch-btn" onclick="moveChapter(${i},-1)" title="Move up">↑</button>`:''}
+          ${i<chapters.length-1?`<button class="ch-btn" onclick="moveChapter(${i},1)" title="Move down">↓</button>`:''}
+          <button class="ch-btn del" onclick="removeChapter(${i})" title="Delete">✕</button>
+        </div>
+      </div>`).join('');
+  updateEstimates();
+}
+
+function addChapter() {
+  const input = document.getElementById('newChapterInput');
+  const val = input.value.trim();
+  if(!val) return;
+  chapters.push(val);
+  input.value = '';
+  renderChapters();
+}
+
+function removeChapter(i) {
+  chapters.splice(i,1);
+  renderChapters();
+}
+
+function moveChapter(i,dir) {
+  const j = i+dir;
+  if(j<0||j>=chapters.length) return;
+  [chapters[i],chapters[j]] = [chapters[j],chapters[i]];
+  renderChapters();
+}
+
+function updateEstimates() {
+  const wpch = parseInt(document.getElementById('wordsPerChapter')?.value||800);
+  const total = chapters.length * wpch;
+  document.getElementById('chapterCount').innerText = chapters.length;
+  document.getElementById('wordEstimate').innerText = total.toLocaleString();
+  document.getElementById('pageEstimate').innerText = Math.round(total/250);
+}
+
+document.getElementById('wordsPerChapter')?.addEventListener('change', updateEstimates);
+renderChapters();
+
+// ══════════════════════════════════════
+// AUTO GENERATE CHAPTERS
+// ══════════════════════════════════════
+async function autoGenerateChapters() {
+  const title = document.getElementById('bookTitle').value.trim();
+  const genre = document.getElementById('bookGenre').value;
+  const desc = document.getElementById('bookDesc').value.trim();
+  if(!title){alert('Please enter a book title first.');return;}
+
+  const btn = event.target;
+  btn.innerText = '⏳ Generating...';
+  btn.disabled = true;
+
+  const prompt = `Generate a professional table of contents for a ${genre} book titled "${title}". ${desc?'Book description: '+desc:''} 
+Return ONLY a JSON array of 8-10 chapter titles. No extra text. Example: ["Introduction","Chapter 1: Title","Chapter 2: Title","Conclusion"]`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:500,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const data = await res.json();
+    if(data.error) throw new Error(data.error.message);
+    let text = data.content.map(b=>b.text||'').join('');
+    text = text.replace(/```json|```/g,'').trim();
+    const parsed = JSON.parse(text);
+    chapters = parsed;
+    renderChapters();
+  } catch(e) {
+    // fallback
+    chapters = ['Introduction','Chapter 1: The Foundation','Chapter 2: The Journey','Chapter 3: Overcoming Challenges','Chapter 4: Building Momentum','Chapter 5: The Transformation','Chapter 6: Living the Victory','Conclusion'];
+    renderChapters();
+  }
+  btn.innerText = '✦ Auto-Generate';
+  btn.disabled = false;
+}
+
+// ══════════════════════════════════════
+// TEMPLATES
+// ══════════════════════════════════════
+const templates = {
+  faith:{
+    title:'Walking in Purpose: A Daily Guide to Faith and Fulfillment',
+    genre:'devotional',
+    tone:'spiritual and devotional',
+    chapters:['Introduction: The Foundation of Faith','Day 1–7: Discovering Your God-Given Purpose','Day 8–14: Overcoming Doubt and Fear','Day 15–21: Walking in Divine Alignment','Day 22–28: Activating Your Destiny','Day 29–30: Living in Overflow','Prayers & Confessions','Final Word: Your Journey Begins Now']
+  },
+  business:{
+    title:'Unstoppable: Building a Business Empire from Zero',
+    genre:'business',
+    tone:'bold, direct, and motivating',
+    chapters:['Introduction: The Entrepreneur Mindset','Chapter 1: Identifying Your Golden Idea','Chapter 2: Building the Foundation','Chapter 3: Marketing Like a Pro','Chapter 4: Money & Finance Mastery','Chapter 5: Building Your Team','Chapter 6: Scaling to Millions','Chapter 7: The Legacy Business','Conclusion: Your Empire Starts Now']
+  },
+  selfhelp:{
+    title:'Unbreakable: The Mindset That Changes Everything',
+    genre:'self-help',
+    tone:'warm, inspiring, and relatable',
+    chapters:['Introduction: Who You Were Meant to Be','Chapter 1: Breaking Old Patterns','Chapter 2: The Power of Your Mindset','Chapter 3: Healing Your Relationship with Yourself','Chapter 4: Setting Boundaries That Honor You','Chapter 5: Building Unstoppable Confidence','Chapter 6: Creating the Life You Deserve','Conclusion: Your New Beginning']
+  },
+  fiction:{
+    title:'Shadows of Lagos: A Love Story',
+    genre:'romance',
+    tone:'storytelling and narrative',
+    chapters:['Prologue','Chapter 1: The City That Never Sleeps','Chapter 2: A Chance Encounter','Chapter 3: Complications','Chapter 4: The Storm','Chapter 5: Secrets','Chapter 6: Betrayal','Chapter 7: Finding Each Other','Epilogue']
+  },
+  finance:{
+    title:'The Wealth Code: How Ordinary People Build Extraordinary Wealth',
+    genre:'finance',
+    tone:'professional and authoritative',
+    chapters:['Introduction: The Wealth Mindset','Chapter 1: Understanding Money Psychology','Chapter 2: The 5 Pillars of Wealth','Chapter 3: Income Strategies That Work in Africa','Chapter 4: Investing for Beginners','Chapter 5: Real Estate & Crypto','Chapter 6: Building Multiple Income Streams','Chapter 7: Protecting & Growing Your Wealth','Conclusion: Your 10-Year Wealth Plan']
+  }
+};
+
+function loadTemplate(key) {
+  const t = templates[key];
+  if(!t) return;
+  document.getElementById('bookTitle').value = t.title;
+  document.getElementById('bookGenre').value = t.genre;
+  chapters = [...t.chapters];
+  document.querySelectorAll('#tonePills .pill').forEach(p=>{
+    p.classList.toggle('active', p.dataset.tone===t.tone);
+  });
+  selectedTone = t.tone;
+  renderChapters();
+  document.getElementById('page-write').scrollIntoView({behavior:'smooth'});
+}
+
+// ══════════════════════════════════════
+// GENERATE BOOK
+// ══════════════════════════════════════
+async function generateBook() {
+  const title = document.getElementById('bookTitle').value.trim();
+  const genre = document.getElementById('bookGenre').value;
+  const audience = document.getElementById('bookAudience').value;
+  const desc = document.getElementById('bookDesc').value.trim();
+  const author = document.getElementById('authorName').value.trim() || 'Kassy Chukwu';
+  const wpch = document.getElementById('wordsPerChapter').value;
+  const style = document.getElementById('writingStyle').value;
+  const special = document.getElementById('specialInstructions').value.trim();
+  const errorBox = document.getElementById('errorBox');
+
+  errorBox.style.display = 'none';
+  document.getElementById('result-section').style.display = 'none';
+
+  if(!title){errorBox.innerText='Please enter a book title.';errorBox.style.display='block';return;}
+  if(chapters.length===0){errorBox.innerText='Please add at least one chapter.';errorBox.style.display='block';return;}
+
+  const btn = document.getElementById('genBtn');
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Writing your masterpiece...';
+
+  // Show progress
+  const progressSteps = [
+    {icon:'📋',label:'Building table of contents...'},
+    {icon:'✍️',label:'Writing chapters...'},
+    {icon:'🧠',label:'Applying human-voice writing...'},
+    {icon:'✨',label:'Polishing & finalizing...'},
+    {icon:'🛡️',label:'Adding digital fingerprint...'}
+  ];
+
+  const pc = document.getElementById('progressCard');
+  const ps = document.getElementById('progressSteps');
+  pc.classList.add('active');
+  ps.innerHTML = progressSteps.map((s,i)=>`<div class="progress-step" id="pstep${i}"><span class="step-icon">${s.icon}</span>${s.label}</div>`).join('');
+
+  let stepIdx = 0;
+  const stepInterval = setInterval(()=>{
+    if(stepIdx<progressSteps.length){
+      document.getElementById('pstep'+stepIdx).classList.add('active');
+      document.getElementById('stepFill').style.width = ((stepIdx+1)/progressSteps.length*100)+'%';
+      stepIdx++;
+    }
+  }, 2000);
+
+  const styleInstructions = {
+    'human-natural': 'Write in a naturally human voice with imperfect sentence variation, colloquialisms, personal asides, and real-world examples. Avoid repetitive AI patterns. Use rhetorical questions, vary sentence length dramatically, include occasional short punchy sentences.',
+    'storytelling': 'Use rich narrative storytelling with scene-setting, vivid descriptions, and character-like voices.',
+    'practical': 'Write with clear, numbered action steps, practical examples, and direct takeaways after each section.',
+    'poetic': 'Write with lyrical flow, metaphors, imagery, and poetic transitions between ideas.'
+  };
+
+  const prompt = `You are a master book author. Write a complete, professional ${genre} book with the following details:
+
+TITLE: "${title}"
+AUTHOR: ${author}
+TARGET AUDIENCE: ${audience}
+WRITING TONE: ${selectedTone}
+WRITING STYLE: ${styleInstructions[style] || styleInstructions['human-natural']}
+${desc ? 'BOOK DESCRIPTION: '+desc : ''}
+${special ? 'SPECIAL INSTRUCTIONS: '+special : ''}
+
+CHAPTERS TO WRITE (write approximately ${wpch} words for EACH chapter):
+${chapters.map((ch,i)=>`${i+1}. ${ch}`).join('\n')}
+
+IMPORTANT RULES:
+- Start with a proper Table of Contents listing all chapters
+- Write EVERY chapter fully — do not skip or summarize
+- Begin each chapter with "CHAPTER [NUMBER]: [TITLE]" on its own line
+- Write in ${selectedTone} tone throughout
+- Sound like a real human author, not AI
+- End the book with: "— This masterpiece is a creation of Kassy Chukwu Aura ✦"
+
+Write the complete book now:`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const data = await res.json();
+    if(data.error) throw new Error(data.error.message);
+    const text = data.content.map(b=>b.text||'').join('');
+
+    clearInterval(stepInterval);
+    document.querySelectorAll('.progress-step').forEach(s=>s.classList.add('done'));
+    document.getElementById('stepFill').style.width='100%';
+
+    setTimeout(()=>{
+      pc.classList.remove('active');
+      displayBook(text, title, author);
+    }, 800);
+
+  } catch(e) {
+    clearInterval(stepInterval);
+    pc.classList.remove('active');
+    errorBox.innerText = '❌ '+e.message;
+    errorBox.style.display = 'block';
+    btn.disabled = false;
+    btn.innerHTML = '✦ Generate Complete Book';
+  }
+}
+
+function displayBook(text, title, author) {
+  // Count words
+  const wc = text.split(/\s+/).length;
+  document.getElementById('displayTitle').innerText = title;
+  document.getElementById('displayAuthor').innerText = author || 'Kassy Chukwu';
+  document.getElementById('displayChapters').innerText = chapters.length;
+  document.getElementById('displayWords').innerText = wc.toLocaleString();
+
+  // TOC
+  const tocList = document.getElementById('tocList');
+  tocList.innerHTML = chapters.map((ch,i)=>`
+    <li onclick="jumpToChapter(${i+1})">
+      <div class="toc-num">${i+1}</div>
+      <span>${ch}</span>
+      <div class="toc-dots"></div>
+      <span class="toc-page">${Math.round((i+1)*wc/chapters.length/250)}</span>
+    </li>`).join('');
+
+  // Body
+  document.getElementById('bookBody').innerText = text;
+
+  // Fingerprint
+  const hash = 'KCA-'+Math.random().toString(36).substr(2,4).toUpperCase()+'-'+Math.random().toString(36).substr(2,4).toUpperCase()+'-'+Date.now().toString(36).toUpperCase();
+  document.getElementById('fingerprintHash').innerText = hash;
+
+  const rs = document.getElementById('result-section');
+  rs.style.display = 'block';
+  rs.scrollIntoView({behavior:'smooth'});
+
+  const btn = document.getElementById('genBtn');
+  btn.disabled = false;
+  btn.innerHTML = '✦ Generate Complete Book';
+}
+
+function jumpToChapter(n) {
+  const body = document.getElementById('bookBody');
+  const text = body.innerText;
+  const idx = text.toLowerCase().indexOf('chapter '+n+':');
+  if(idx>=0){
+    const range = document.createRange();
+    range.setStart(body.firstChild, Math.min(idx, body.firstChild.length-1));
+    const rect = range.getBoundingClientRect();
+    body.parentElement.scrollTop += rect.top - 100;
+  }
+}
+
+function copyBook() {
+  const t = document.getElementById('displayTitle').innerText+'\n\n'+document.getElementById('bookBody').innerText;
+  navigator.clipboard.writeText(t);
+  event.target.innerText='✅ Copied!';
+  setTimeout(()=>event.target.innerText='📋 Copy All Text',2000);
+}
+
+function downloadBook() {
+  const title = document.getElementById('displayTitle').innerText;
+  const text = title+'\n\n'+document.getElementById('bookBody').innerText;
+  const blob = new Blob([text],{type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = title.replace(/[^a-z0-9]/gi,'_')+'.txt';
+  a.click();
+}
+
+function copyFingerprint() {
+  navigator.clipboard.writeText(document.getElementById('fingerprintHash').innerText);
+}
+
+// ══════════════════════════════════════
+// REWRITE DOC
+// ══════════════════════════════════════
+async function rewriteDoc() {
+  const text = document.getElementById('rewriteInput').value.trim();
+  const style = document.getElementById('rewriteStyle').value;
+  const err = document.getElementById('rewriteError');
+  err.style.display='none';
+  if(!text){err.innerText='Please paste some text to rewrite.';err.style.display='block';return;}
+
+  const prompt = `Rewrite the following text. Style: "${style}". Make it sound completely natural and human. Maintain the core meaning but rewrite every sentence freshly:\n\n${text.substring(0,3000)}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+    });
+    const data = await res.json();
+    if(data.error) throw new Error(data.error.message);
+    document.getElementById('rewriteOutput').innerText = data.content.map(b=>b.text||'').join('');
+    document.getElementById('rewriteResult').style.display='block';
+  } catch(e) {
+    err.innerText='❌ '+e.message;
+    err.style.display='block';
+  }
+}
+
+function handleFileUpload(input) {
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => { document.getElementById('rewriteInput').value = e.target.result.substring(0,5000); };
+  reader.readAsText(file);
+}
+
+// ══════════════════════════════════════
+// LINK SUMMARIZER
+// ══════════════════════════════════════
+async function summarizeLink() {
+  const link = document.getElementById('linkInput').value.trim();
+  const outputType = document.getElementById('linkOutput').value;
+  const context = document.getElementById('linkContext').value.trim();
+  const err = document.getElementById('linkError');
+  err.style.display='none';
+
+  const prompt = `${outputType} based on the content from this link: ${link||'(no link provided — use the context below)'}\n${context?'Additional context: '+context:''}\n\nWrite a full, detailed, professional piece. Sound like a human author throughout.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+    });
+    const data = await res.json();
+    if(data.error) throw new Error(data.error.message);
+    document.getElementById('linkOutput2').innerText = data.content.map(b=>b.text||'').join('');
+    document.getElementById('linkResult').style.display='block';
+  } catch(e) {
+    err.innerText='❌ '+e.message;
+    err.style.display='block';
+  }
+}
+
+// ══════════════════════════════════════
+// VIDEO TO BOOK
+// ══════════════════════════════════════
+async function videoToBook() {
+  const link = document.getElementById('videoLink').value.trim();
+  const desc = document.getElementById('videoDesc').value.trim();
+  const err = document.getElementById('videoError');
+  err.style.display='none';
+  if(!link&&!desc){err.innerText='Please enter a video link or description.';err.style.display='block';return;}
+
+  const prompt = `Write a full professional book with chapters based on this video content:\n${link?'Video URL: '+link+'\n':''}${desc?'Topic/Description: '+desc:''}\n\nCreate a complete book with Introduction, 6 chapters, and Conclusion. Write in a warm, inspiring, human voice. Minimum 1000 words.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})
+    });
+    const data = await res.json();
+    if(data.error) throw new Error(data.error.message);
+    document.getElementById('videoOutput').innerText = data.content.map(b=>b.text||'').join('');
+    document.getElementById('videoResult').style.display='block';
+  } catch(e) {
+    err.innerText='❌ '+e.message;
+    err.style.display='block';
+  }
+}
+
+// ══════════════════════════════════════
+// AVATAR
+// ══════════════════════════════════════
+function previewFace(input) {
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('faceImg').src = e.target.result;
+    document.getElementById('facePreview').style.display='block';
+  };
+  reader.readAsDataURL(file);
+}
+
+function selectAvatar(el) {
+  document.querySelectorAll('.avatar-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function generateAvatar() {
+  const style = document.querySelector('.avatar-card.selected')?.dataset.style || 'Intellectual Professional';
+  const author = document.getElementById('authorName')?.value.trim() || 'Kassy Chukwu';
+  document.getElementById('avatarResult').innerHTML = `
+    <div style="background:linear-gradient(135deg,#1e293b,#0f172a);border-radius:16px;padding:28px;text-align:center;width:100%">
+      <div style="font-size:56px;margin-bottom:12px">${style.includes('Social')?'🌟':style.includes('Expert')?'👔':'🧑‍💻'}</div>
+      <div style="font-size:16px;font-weight:700;color:white;margin-bottom:4px">${author}</div>
+      <div style="font-size:12px;color:#60a5fa;margin-bottom:14px">${style} Avatar</div>
+      <div style="background:rgba(37,99,235,0.2);border-radius:8px;padding:10px;font-size:12px;color:#93c5fd;line-height:1.7">
+        ✅ Avatar style: <b>${style}</b><br>
+        📸 Use this profile on: Canva, HeyGen, or Capcut<br>
+        🎨 Suggested background: Studio professional lighting
+      </div>
+    </div>`;
+}
+
+// ══════════════════════════════════════
+// FINGERPRINT
+// ══════════════════════════════════════
+function generateFingerprint() {
+  const title = document.getElementById('fpTitle').value.trim();
+  const author = document.getElementById('fpAuthor').value.trim();
+  const date = document.getElementById('fpDate').value.trim();
+  if(!title||!author){alert('Please fill in title and author.');return;}
+  const hash = btoa(title+author+date).replace(/[^A-Z0-9]/gi,'').toUpperCase().substring(0,32);
+  const formatted = 'KCA-'+hash.substring(0,8)+'-'+hash.substring(8,16)+'-'+hash.substring(16,24)+'-'+Date.now().toString(36).toUpperCase();
+  document.getElementById('fpHash').innerText = formatted+'\n\nTitle: '+title+'\nAuthor: '+author+'\nDate: '+(date||new Date().toLocaleDateString())+'\nIssued by: Kassy Chukwu Aura™';
+  document.getElementById('fingerprintResult').style.display='block';
+}
+
+function copyFP() {
+  navigator.clipboard.writeText(document.getElementById('fpHash').innerText);
+  event.target.innerText='✅ Copied!';
+  setTimeout(()=>event.target.innerText='📋 Copy Fingerprint',2000);
+}
+
+// ══════════════════════════════════════
+// ISBN TOGGLE
+// ══════════════════════════════════════
+function selectISBN(el, type) {
+  document.querySelectorAll('.toggle-option').forEach(o=>o.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('isbnInfo').style.display = type==='isbn'?'block':'none';
+}
+
+// ══════════════════════════════════════
+// CONTACT
+// ══════════════════════════════════════
+function saveContact() {
+  const wa = document.getElementById('contactWA').value.trim();
+  const ig = document.getElementById('contactIG').value.trim();
+  const tt = document.getElementById('contactTT').value.trim();
+  const fb = document.getElementById('contactFB').value.trim();
+  const tw = document.getElementById('contactTW').value.trim();
+  const web = document.getElementById('contactWeb').value.trim();
+  const strip = document.getElementById('contactStripContent');
+  let items = '';
+  if(wa) items += `<div class="contact-item"><span class="ci-icon">💬</span>${wa}</div><div class="contact-sep">|</div>`;
+  if(ig) items += `<div class="contact-item"><span class="ci-icon">📸</span>${ig}</div><div class="contact-sep">|</div>`;
+  if(tt) items += `<div class="contact-item"><span class="ci-icon">🎵</span>${tt}</div><div class="contact-sep">|</div>`;
+  if(tw) items += `<div class="contact-item"><span class="ci-icon">𝕏</span>${tw}</div><div class="contact-sep">|</div>`;
+  if(web) items += `<div class="contact-item"><span class="ci-icon">🌐</span>${web}</div>`;
+  strip.innerHTML = items || '<div style="color:#94a3b8;font-size:13px">No contact info added.</div>';
+  document.getElementById('contactStrip').style.display='block';
+}
+
+// ══════════════════════════════════════
+// LIVE TRENDS
+// ══════════════════════════════════════
+const trendData = [
+  {flag:'🇳🇬',topic:'Nigeria Election 2027 Predictions',type:'wave',hot:true},
+  {flag:'🇳🇬',topic:'Dollar vs Naira Exchange Rate',type:'spark',hot:true},
+  {flag:'🇳🇬',topic:'How to Make Money Online in Nigeria',type:'wave',hot:false},
+  {flag:'🇳🇬',topic:'JAMB 2026 Results & Cutoff Marks',type:'spark',hot:true},
+  {flag:'🌍',topic:'AI Tools for African Entrepreneurs',type:'wave',hot:true},
+  {flag:'🌍',topic:'Remote Work Opportunities 2026',type:'wave',hot:false},
+  {flag:'🌍',topic:'Crypto Regulation in Africa',type:'spark',hot:true},
+  {flag:'🌍',topic:'Mental Health Awareness Rising',type:'wave',hot:false},
+];
+
+function buildTicker() {
+  const feed = document.getElementById('tickerFeed');
+  if(!feed) return;
+  feed.innerHTML = trendData.slice(0,5).map(t=>`
+    <div class="ticker-item">
+      <span class="ticker-flag">${t.flag}</span>
+      <span>${t.topic}</span>
+      ${t.hot?'<span class="ticker-fire">🔥</span>':''}
+      <span class="viral-badge ${t.type==='wave'?'wave':''}">${t.type==='wave'?'🌊 Wave':'⚡ Spark'}</span>
+    </div>`).join('');
+}
+
+function buildTrendPage() {
+  const ng = document.getElementById('ngTrends');
+  const gl = document.getElementById('globalTrends');
+  const vp = document.getElementById('viralPredictor');
+  const sb = document.getElementById('sidebarTrends');
+  if(!ng) return;
+
+  const ngData = trendData.filter(t=>t.flag==='🇳🇬');
+  const glData = trendData.filter(t=>t.flag==='🌍');
+
+  const renderTrend = t => `
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="useTrendAsBook('${t.topic}')">
+      <div style="flex:1;font-size:13px;font-weight:500;color:var(--ink)">${t.topic}</div>
+      <div style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:100px;background:${t.type==='wave'?'#d1fae5':'#fef3c7'};color:${t.type==='wave'?'#065f46':'#92400e'}">${t.type==='wave'?'🌊 Global Wave':'⚡ Flash Spark'}</div>
+      ${t.hot?'<span style="font-size:14px">🔥</span>':''}
+    </div>`;
+
+  ng.innerHTML = ngData.map(renderTrend).join('');
+  gl.innerHTML = glData.map(renderTrend).join('');
+
+  vp.innerHTML = trendData.map(t=>`
+    <div style="display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--border);border-radius:10px;margin-bottom:8px;cursor:pointer;transition:all 0.15s" onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--border)'" onclick="useTrendAsBook('${t.topic}')">
+      <div style="font-size:20px">${t.flag}</div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600;color:var(--ink)">${t.topic}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">Click to use as book topic</div>
+      </div>
+      <div style="font-size:11px;background:${t.type==='wave'?'#d1fae5':'#fef3c7'};color:${t.type==='wave'?'#065f46':'#92400e'};padding:4px 10px;border-radius:100px;font-weight:700">${t.type==='wave'?'🌊 High Potential':'⚡ Trending Now'}</div>
+    </div>`).join('');
+
+  if(sb) sb.innerHTML = ngData.slice(0,3).map(t=>`🔥 ${t.topic}<br>`).join('');
+}
+
+function useTrendAsBook(topic) {
+  document.getElementById('bookTitle').value = topic;
+  showPage('write');
+  document.getElementById('bookTitle').focus();
+}
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+buildTicker();
+buildTrendPage();
+setInterval(buildTicker, 30000);
+</script>
+</body>
+</html>
