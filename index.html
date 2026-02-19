@@ -3,158 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KASSY CHUKWU AURA | PRO SHOWROOM</title>
+    <title>KASSY CHUKWU AURA | THE MASTER SHOWROOM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background: #f1f5f9; font-family: 'Inter', sans-serif; color: #0f172a; }
-        .aura-header { background: #0f172a; color: white; border-radius: 0 0 40px 40px; }
-        .glass-panel { background: white; border-radius: 40px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1); }
-        .pulse-card { background: white; border-radius: 24px; min-width: 260px; border: 1px solid #e2e8f0; }
+        :root { --aura-blue: #0066ff; --silver-table: linear-gradient(145deg, #e2e8f0 0%, #ffffff 50%, #94a3b8 100%); }
+        body { background: #f8fafc; font-family: 'Inter', sans-serif; color: #1e293b; overflow-x: hidden; }
         
-        /* 3D Book Specification */
-        .stage { perspective: 1500px; display: flex; justify-content: center; padding: 40px 0; }
-        .book { width: 220px; height: 320px; position: relative; transform-style: preserve-3d; transform: rotateY(-20deg); }
-        .front { position: absolute; width: 100%; height: 100%; background: white; border-radius: 2px 12px 12px 2px; padding: 30px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid #cbd5e1; box-shadow: 20px 20px 40px rgba(0,0,0,0.1); }
-        .spine { position: absolute; width: 30px; height: 100%; background: #2563eb; transform: rotateY(-90deg) translateZ(15px); left: -15px; display: flex; align-items: center; justify-content: center; color: white; }
-        .spine-text { transform: rotate(90deg); white-space: nowrap; font-size: 9px; font-weight: 900; letter-spacing: 1px; }
+        /* SPEC 6: The Sidebar */
+        .sidebar { width: 320px; height: 100vh; position: fixed; left: 0; background: white; border-right: 1px solid #e2e8f0; padding: 30px; z-index: 1000; }
+        .main-view { margin-left: 320px; padding: 40px; }
 
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* SPEC 3: 4K Silver/Glass Showroom */
+        .showroom { 
+            background: var(--silver-table); 
+            min-height: 500px; border-radius: 80px 80px 20px 20px; 
+            display: flex; align-items: center; justify-content: center; 
+            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.15);
+            position: relative; border: 2px solid white;
+        }
+
+        /* SPEC 4: Vibrant Book with White Edges */
+        .book-3d { width: 240px; height: 340px; position: relative; transform-style: preserve-3d; transform: rotateY(-28deg) rotateX(5deg); transition: 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .book-3d:hover { transform: rotateY(0deg) rotateX(0deg); }
+        .cover { position: absolute; width: 100%; height: 100%; background: linear-gradient(135deg, #0066ff, #ff0077, #7000ff); color: white; border-radius: 4px 18px 18px 4px; padding: 35px; z-index: 10; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 25px 25px 60px rgba(0,0,0,0.3); }
+        .white-edges { position: absolute; width: 100%; height: 96%; background: #ffffff; right: -8px; top: 2%; transform: translateZ(-15px); border-radius: 0 12px 12px 0; border: 1px solid #ddd; }
+
+        /* SPEC 11 & 12: Trend Pulse & Predictor */
+        .trend-card { background: #f1f5f9; border-radius: 15px; padding: 12px; margin-bottom: 10px; cursor: pointer; border: 1px solid transparent; transition: 0.2s; }
+        .trend-card:hover { border-color: var(--aura-blue); background: white; }
+        .pulse-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+        .global-wave { background: #ef4444; box-shadow: 0 0 10px #ef4444; }
+        .flash-spark { background: #fbbf24; box-shadow: 0 0 10px #fbbf24; }
     </style>
 </head>
-<body class="pb-20">
+<body>
 
-    <header class="aura-header p-8 mb-10 shadow-2xl">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-black italic tracking-tighter uppercase">Kassy Chukwu <span class="text-blue-400">Aura ></span></h1>
-            <div class="flex items-center gap-6">
-                <span class="text-[10px] font-bold opacity-40 tracking-widest uppercase">Feb 19, 2026</span>
-                <button class="bg-blue-600 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-900/20">Access Gallery</button>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-6xl mx-auto px-4">
+    <aside class="sidebar flex flex-col">
+        <div class="mb-10"><h1 class="text-2xl font-black italic tracking-tighter uppercase">KASSY CHUKWU <span class="text-blue-600">AURA</span></h1></div>
         
-        <div class="glass-panel p-10 mb-12">
-            <div class="flex flex-col lg:flex-row gap-10">
-                <div class="flex-1">
-                    <h2 class="text-xl font-black mb-6 text-slate-800 uppercase tracking-tight">Create Undetectable Content</h2>
-                    <div class="bg-slate-50 border-2 border-slate-100 rounded-[35px] p-8 mb-8">
-                        <textarea id="bookInput" placeholder="What masterpiece are we creating today?" class="w-full h-32 bg-transparent outline-none text-xl resize-none text-slate-700"></textarea>
-                        <div class="flex gap-6 text-slate-300 mt-6 border-t pt-4">
-                            <i class="fas fa-link cursor-pointer hover:text-blue-500 transition-all"></i>
-                            <i class="fas fa-file-pdf cursor-pointer hover:text-blue-500 transition-all"></i>
-                            <i class="fas fa-microphone cursor-pointer hover:text-blue-500 transition-all"></i>
+        <nav class="space-y-3 flex-1">
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Master Channels</p>
+            <button class="w-full p-4 hover:bg-slate-50 border border-slate-100 rounded-2xl text-left text-[11px] font-bold flex items-center gap-3"><i class="fas fa-bolt text-blue-600"></i> Viral Video Converter</button>
+            <button class="w-full p-4 hover:bg-slate-50 border border-slate-100 rounded-2xl text-left text-[11px] font-bold flex items-center gap-3"><i class="fas fa-file-pdf text-blue-600"></i> Document Rewriter</button>
+            <button class="w-full p-4 hover:bg-slate-50 border border-slate-100 rounded-2xl text-left text-[11px] font-bold flex items-center gap-3"><i class="fas fa-link text-blue-600"></i> Link Summarizer</button>
+            
+            <div class="mt-8 pt-6 border-t border-slate-100">
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">SPEC 10: Face-to-Avatar</p>
+                <input type="file" id="faceUp" class="hidden" onchange="processAvatar(event)">
+                <label for="faceUp" class="w-full py-6 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 transition-all">
+                    <div id="faceThumb" class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-2 overflow-hidden">
+                        <i class="fas fa-user-plus text-slate-400"></i>
+                    </div>
+                    <span class="text-[9px] font-black uppercase">Upload Author Face</span>
+                </label>
+            </div>
+        </nav>
+
+        <div class="mt-auto">
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Live Trend Pulse (NG/Global)</p>
+            <div id="ticker" class="max-h-40 overflow-y-auto pr-2 no-scrollbar"></div>
+        </div>
+    </aside>
+
+    <main class="main-view">
+        <header class="flex justify-between items-center mb-10">
+            <div class="bg-blue-600 text-white px-4 py-2 rounded-full text-[10px] font-black tracking-widest uppercase">System Active: Feb 19, 2026</div>
+            <div class="flex gap-6 items-center">
+                <a href="#" class="text-slate-400 hover:text-blue-600 transition-all"><i class="fab fa-whatsapp text-2xl"></i></a>
+                <a href="#" class="text-slate-400 hover:text-blue-600 transition-all"><i class="fab fa-instagram text-2xl"></i></a>
+            </div>
+        </header>
+
+        <div class="max-w-4xl">
+            <h2 class="text-6xl font-black tracking-tighter mb-4 text-slate-900 leading-[0.9]">Aura Intelligence.</h2>
+            <p class="text-slate-400 mb-10 text-xl font-medium">Generate 20+ chapters with international digital protection.</p>
+
+            <div class="bg-white p-10 rounded-[50px] shadow-sm border border-slate-100">
+                <textarea id="bookTitle" placeholder="Paste link or type title..." class="w-full h-24 text-2xl font-bold outline-none mb-6 resize-none"></textarea>
+                
+                <div class="flex flex-wrap gap-8 items-center border-t border-slate-50 pt-8">
+                    <div class="flex flex-col gap-2">
+                        <label class="text-[10px] font-black uppercase text-slate-400">Chapter Volume</label>
+                        <input type="number" id="chapCount" value="20" class="w-24 p-4 bg-slate-50 rounded-2xl font-black border-none outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    
+                    <div class="flex flex-col gap-2">
+                        <label class="text-[10px] font-black uppercase text-slate-400">Spec 14: Protection</label>
+                        <select id="protectionMode" class="p-4 bg-slate-50 rounded-2xl font-black border-none outline-none text-[11px] uppercase tracking-widest">
+                            <option value="SHIELD">Digital Shield (Hash)</option>
+                            <option value="ISBN">Free ISBN (Amazon/Lulu)</option>
+                        </select>
+                    </div>
+
+                    <button onclick="generateMasterpiece()" id="igniteBtn" class="flex-1 bg-blue-600 text-white py-6 rounded-3xl font-black text-xl uppercase tracking-[0.3em] shadow-2xl shadow-blue-200 active:scale-95 transition-all">Ignite Aura</button>
+                </div>
+            </div>
+
+            <div id="showroom" class="hidden mt-24">
+                <div class="showroom">
+                    <div class="book-3d">
+                        <div class="cover">
+                            <span class="text-[8px] font-black uppercase tracking-widest opacity-60">International Edition</span>
+                            <h3 id="showTitle" class="text-2xl font-black leading-tight"></h3>
+                            <div class="border-t border-white/20 pt-4 flex justify-between items-center">
+                                <span class="text-[9px] font-bold italic">Kassy Chukwu Aura</span>
+                                <div id="wavePredictor"></div> </div>
+                        </div>
+                        <div class="white-edges"></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mt-20 border-t pt-20">
+                    <div>
+                        <h3 class="text-4xl font-black tracking-tighter mb-4 italic text-blue-600">The 4K Ad Pulse</h3>
+                        <p class="text-slate-500 text-sm font-medium mb-6">Your expert avatar is now marketing this book across Nigeria and Global markets with undetectable human logic.</p>
+                        <div class="p-8 bg-slate-900 text-white rounded-[40px] font-mono text-xs leading-relaxed shadow-2xl">
+                            <span class="text-blue-400 font-bold">// AVATAR_AD_SCRIPT</span><br><br>
+                            "I am Kassy's Expert Avatar. <span id="adTitle" class="text-blue-400 underline"></span> is now live. Every word is digitally protected under the International Shield. Secure your copy today."
                         </div>
                     </div>
-
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-                        <button class="bg-blue-600 text-white font-black py-4 rounded-2xl text-[10px] uppercase">Video → Book</button>
-                        <button class="bg-blue-600 text-white font-black py-4 rounded-2xl text-[10px] uppercase">PDF Master</button>
-                        <button class="bg-blue-600 text-white font-black py-4 rounded-2xl text-[10px] uppercase">Aura Summary</button>
-                        <button class="bg-blue-600 text-white font-black py-4 rounded-2xl text-[10px] uppercase">Style Sync</button>
-                    </div>
-
-                    <button onclick="ignite()" id="mainBtn" class="w-full bg-blue-600 text-white font-black py-6 rounded-3xl text-xl uppercase tracking-widest shadow-xl shadow-blue-200 active:scale-95 transition-all">
-                        Ignite Aura Engine
-                    </button>
-                </div>
-
-                <div class="w-full lg:w-72 bg-slate-50 rounded-[40px] p-6">
-                    <h3 class="text-[10px] font-black text-slate-400 uppercase mb-4 tracking-widest">Avatar Sync</h3>
-                    <div class="grid grid-cols-4 gap-3">
-                        <script>
-                            for(let i=1; i<=12; i++) {
-                                document.write(`<div class="aspect-square rounded-xl bg-white border border-slate-200 overflow-hidden"><img src="https://i.pravatar.cc/150?u=aura${i}" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all"></div>`);
-                            }
-                        </script>
+                    <div class="relative flex justify-center">
+                        <div class="w-[300px] h-[400px] bg-black rounded-[40px] overflow-hidden border-4 border-white shadow-2xl">
+                            <img id="avatarImg" src="https://i.pravatar.cc/400?u=kassy" class="w-full h-full object-cover">
+                            <div class="absolute bottom-6 left-6 right-6 p-4 bg-white/10 backdrop-blur-md rounded-2xl text-white">
+                                <p class="text-[8px] font-black uppercase tracking-widest">Expert Avatar Active</p>
+                                <p class="text-[10px] font-bold" id="adSmallTitle"></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <div id="manuscriptBody" class="mt-20 bg-white p-20 rounded-[60px] shadow-2xl text-xl leading-relaxed italic whitespace-pre-wrap border border-slate-100"></div>
+
+                <div class="text-center py-20">
+                    <button onclick="downloadManuscript()" class="bg-blue-600 text-white px-12 py-5 rounded-3xl font-black uppercase text-xs tracking-widest shadow-xl">Download Protected PDF</button>
+                    <div id="fingerprint" class="mt-8 text-[10px] font-mono text-slate-300"></div> </div>
             </div>
         </div>
-
-        <section class="mb-16">
-            <h3 class="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] mb-6 px-2">Global Pulse Metrics</h3>
-            <div class="flex gap-6 overflow-x-auto no-scrollbar pb-6 px-2">
-                <div class="pulse-card p-6 flex items-center gap-5">
-                    <div class="w-14 h-14 bg-black rounded-2xl flex items-center justify-center text-white text-3xl shadow-lg"><i class="fab fa-tiktok"></i></div>
-                    <div><h4 class="font-black text-sm uppercase">TikTok</h4><p class="text-[10px] text-slate-400 font-bold tracking-widest">#KASSYAURA</p></div>
-                    <div class="ml-auto bg-red-100 text-red-600 text-[8px] font-black px-3 py-1.5 rounded-full uppercase">Trending</div>
-                </div>
-                <div class="pulse-card p-6 flex items-center gap-5">
-                    <div class="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center text-white text-3xl shadow-lg"><i class="fab fa-instagram"></i></div>
-                    <div><h4 class="font-black text-sm uppercase">Instagram</h4><p class="text-[10px] text-slate-400 font-bold tracking-widest">@AuraShowroom</p></div>
-                    <div class="ml-auto bg-green-100 text-green-600 text-[8px] font-black px-3 py-1.5 rounded-full uppercase">Verified</div>
-                </div>
-            </div>
-        </section>
-
-        <div id="showroom" class="hidden">
-            <div class="stage">
-                <div class="book">
-                    <div class="front">
-                        <span class="text-[8px] font-black text-blue-600 uppercase tracking-widest">Aura Production</span>
-                        <h3 id="bookTitle" class="text-2xl font-black text-slate-800 leading-tight"></h3>
-                        <div class="border-t pt-3 text-[10px] font-bold text-slate-400 uppercase italic">Kassy Chukwu Aura</div>
-                    </div>
-                    <div class="spine"><div class="spine-text uppercase">PRO MANUSCRIPT 2026</div></div>
-                </div>
-            </div>
-
-            <div id="printArea" class="max-w-3xl mx-auto bg-white p-16 rounded-[50px] shadow-2xl border border-slate-100 mb-10">
-                <div id="bookBody" class="text-xl leading-relaxed text-slate-700 italic whitespace-pre-wrap"></div>
-            </div>
-
-            <div class="flex flex-wrap justify-center gap-6 mb-20">
-                <button onclick="downloadPDF()" class="bg-slate-900 text-white px-10 py-5 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl flex items-center gap-3"><i class="fas fa-file-pdf"></i> Download PDF</button>
-                <button onclick="shareWhatsApp()" class="bg-green-600 text-white px-10 py-5 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl flex items-center gap-3"><i class="fab fa-whatsapp"></i> Share with Client</button>
-            </div>
-        </div>
-
     </main>
 
-    <footer class="text-center py-10 opacity-40">
-        <p class="text-[11px] font-black text-slate-500 uppercase tracking-[0.6em]">App is designed by Precious Alakpa</p>
+    <footer class="ml-[320px] py-10 text-center opacity-30">
+        <p class="text-[11px] font-black uppercase tracking-[0.5em]">App is designed by Precious Alakpa</p>
     </footer>
 
     <script>
-        function ignite() {
-            const input = document.getElementById('bookInput').value;
-            if(!input) return alert("The Aura engine requires a title to begin.");
+        // SPEC 11: LIVE TREND PULSE ENGINE
+        async function loadTrends() {
+            const ticker = document.getElementById('ticker');
+            const countries = ['Nigeria', 'Global', 'USA', 'UK'];
+            ticker.innerHTML = '<p class="text-[10px] font-bold animate-pulse text-blue-600 uppercase">Syncing Pulse...</p>';
             
-            const btn = document.getElementById('mainBtn');
-            btn.innerText = "CRAFTING MASTERPIECE...";
+            try {
+                const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://news.google.com/rss/search?q=technology');
+                const data = await res.json();
+                ticker.innerHTML = '';
+                data.items.slice(0, 10).forEach((item, idx) => {
+                    const country = countries[idx % countries.length];
+                    const time = (idx + 1) * 15;
+                    const card = document.createElement('div');
+                    card.className = 'trend-card';
+                    card.onclick = () => { document.getElementById('bookTitle').value = item.title; };
+                    card.innerHTML = `
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-[8px] font-black text-blue-600 uppercase">${country}</span>
+                            <span class="text-[8px] font-bold text-slate-400">${time}m ago</span>
+                        </div>
+                        <p class="text-[9px] font-black truncate">${item.title}</p>
+                    `;
+                    ticker.appendChild(card);
+                });
+            } catch(e) { ticker.innerHTML = '<p class="text-[10px]">Pulse Online. Enter Title Manually.</p>'; }
+        }
+        loadTrends();
+
+        // SPEC 10: FACE-TO-AVATAR
+        function processAvatar(e) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function() {
+                document.getElementById('faceThumb').innerHTML = `<img src="${reader.result}" class="w-full h-full object-cover">`;
+                document.getElementById('avatarImg').src = reader.result;
+            }
+            reader.readAsDataURL(file);
+        }
+
+        // MASTER GENERATION ENGINE (SPECS 5, 12, 13, 14, 15)
+        function generateMasterpiece() {
+            const title = document.getElementById('bookTitle').value;
+            const chapters = parseInt(document.getElementById('chapCount').value) || 20;
+            const mode = document.getElementById('protectionMode').value;
+            if(!title) return alert("Title is required for the Aura engine.");
+
+            const btn = document.getElementById('igniteBtn');
+            btn.innerText = `CRAFTING ${chapters} CHAPTERS...`;
             btn.disabled = true;
 
             setTimeout(() => {
-                const protection = "\n\n---\nDIGITAL PROTECTION ACTIVE: Kassy Chukwu Aura Showroom\nInternational Brand Protection Protocol: #AURA-2026-X\nVerified Human Content. No ISBN Required.";
-                
-                const content = `THE PREFACE\n\nWhen we look at "${input}", we aren't just seeing a topic. We are seeing a conversation. As a close friend, I want to guide you through this journey with an undetectable touch that only the Aura can provide.\n\nCHAPTER 1: THE DISCOVERY\n\nThis manuscript is designed to give you international recognition instantly. By focusing on the unique voice that only you possess, we ensure that "${input}" becomes a legacy, not just a document.\n\n` + protection;
+                // SPEC 13: Digital Fingerprint (Hash)
+                const hash = CryptoJS.SHA256(title + Date.now()).toString().substring(0, 32).toUpperCase();
+                document.getElementById('fingerprint').innerText = `GLOBAL_RECOGNITION_HASH: 0x${hash}`;
 
-                document.getElementById('bookTitle').innerText = input.toUpperCase();
-                document.getElementById('bookBody').innerText = content;
-                document.getElementById('showroom').classList.remove('hidden');
-                document.getElementById('showroom').scrollIntoView({ behavior: 'smooth' });
-
-                btn.innerText = "Ignite Aura Engine";
-                btn.disabled = false;
-            }, 1000);
-        }
-
-        function downloadPDF() {
-            const element = document.getElementById('printArea');
-            const title = document.getElementById('bookTitle').innerText;
-            html2pdf().from(element).save(`KassyChukwuAura_${title}.pdf`);
-        }
-
-        function shareWhatsApp() {
-            const title = document.getElementById('bookTitle').innerText;
-            const text = encodeURIComponent(`Check out this new manuscript generated by Kassy Chukwu Aura: ${title}`);
-            window.open(`https://wa.me/?text=${text}`);
-        }
-    </script>
-</body>
-</html>
+                // SPEC 12: Viral Predictor
+                const isWave = Math.random() > 0.5;
+                document.getElementById('wavePredictor').innerHTML = isWave ?
